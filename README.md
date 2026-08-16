@@ -1,4 +1,4 @@
-# FR 🇫🇷 - IA Snake — Apprentissage par Renforcement (DQN)
+# FR [<img src="https://flagcdn.com/24x18/fr.png" alt="Français"> Français](README.md) - IA Snake — Apprentissage par Renforcement (DQN)
 
 Un agent intelligent qui apprend à jouer au jeu Snake de zéro, sans règles écrites,
 uniquement en observant les conséquences de ses actions.
