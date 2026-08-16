@@ -34,7 +34,7 @@ en maximisant un score de récompense cumulé.
 
 ## Structure du projet
 
-```
+```text
 IA_snake/
 ├── agent.py              # Agent RL + boucle d'entraînement
 ├── game.py               # Environnement Snake pour l'IA
@@ -79,7 +79,7 @@ python agent.py
 
 L'agent reprend automatiquement depuis le dernier checkpoint s'il en existe un.
 Une fenêtre Pygame affiche le jeu en direct.
-Un graphique matplotlib montre l'évolution des scores.
+Un graphique Matplotlib montre l'évolution des scores.
 
 ### Jouer soi-même
 
@@ -120,8 +120,8 @@ L'agent perçoit le monde via un vecteur de **11 valeurs** (0 ou 1) :
 
 ### 3. Le réseau de neurones
 
-```
-Entrée (11)  →  Couche cachée (256, ReLU)  →  Sortie (3)
+```text
+Entrée (11) → Couche cachée (256, ReLU) → Sortie (3)
 ```
 
 La sortie donne une **valeur Q** pour chacune des 3 actions possibles.
@@ -131,7 +131,7 @@ L'agent choisit l'action avec la valeur Q maximale.
 
 L'agent apprend via l'**équation de Bellman** :
 
-```
+```text
 Q(état, action) = récompense + γ × max(Q(état suivant, toutes actions))
 ```
 
@@ -145,7 +145,7 @@ Avec :
 Pendant les 80 premières parties, l'agent explore aléatoirement pour découvrir
 de nouvelles stratégies. Ensuite, il exploite les connaissances acquises.
 
-```
+```text
 ε = max(0, 80 - nombre_de_parties)
 Si random(0, 200) < ε  →  action aléatoire (exploration)
 Sinon                  →  réseau de neurones (exploitation)
@@ -197,21 +197,22 @@ Au prochain lancement, l'entraînement **reprend exactement** où il s'est arrê
 
 ## Auteur
 
-Projet réalisé dans le cadre du cursus **Data IA B3 — YDays**
+Projet réalisé dans le cadre du cursus **Data IA B3 — YDays**.
 
-
+---
 
 # IA Snake — Reinforcement Learning (DQN)
 
-An intelligent agent that learns to play the Snake game from scratch, without any hard-coded rules, simply by observing the consequences of its actions.
+An intelligent agent that learns to play the Snake game from scratch, without any hard-coded rules,
+simply by observing the consequences of its actions.
 
 ---
 
 ## Project Overview
 
 This project implements a **Deep Q-Learning (DQN)** agent trained on the Snake game.
-
-The agent does not know the rules of the game: it learns through trial and error by maximizing a cumulative reward score.
+The agent does not know the rules of the game: it learns through trial and error,
+maximizing a cumulative reward score.
 
 **Technologies used:**
 - Python 3.11
@@ -247,3 +248,156 @@ IA_snake/
 └── model/
     ├── model.pth         # Trained model weights
     └── checkpoint.pth    # Complete checkpoint (model + optimizer + state)
+```
+
+---
+
+## Installation
+
+### Requirements
+
+- Python 3.10 or 3.11
+
+### Install Dependencies
+
+```bash
+pip install torch pygame numpy matplotlib ipython
+```
+
+---
+
+## Running the Project
+
+> **Important:** Always run from the project directory so that `arial.ttf` can be found.
+
+```bash
+cd "path/to/IA_snake"
+```
+
+### Train the AI
+
+```bash
+python agent.py
+```
+
+The agent automatically resumes training from the latest checkpoint if one exists.
+A Pygame window displays the game in real time.
+A Matplotlib graph shows the evolution of the scores.
+
+### Play the Game Yourself
+
+```bash
+python snake_game_human.py
+```
+
+Controls: **keyboard arrow keys**.
+
+---
+
+## Technical Overview
+
+### 1. The Environment
+
+The Snake game is adapted for the AI (`game.py`):
+- **Action:** 3 choices — move straight, turn right, or turn left
+- **Reward:** +10 for eating food, -10 in case of a collision
+- **Game over:** collision with a wall or the snake's body, or timeout (100 × snake length)
+
+### 2. The State — 11 Boolean Values
+
+The agent perceives the environment through a vector of **11 values** (0 or 1):
+
+| # | Description |
+|---|---|
+| 0 | Danger straight ahead |
+| 1 | Danger to the right |
+| 2 | Danger to the left |
+| 3 | Current direction: left |
+| 4 | Current direction: right |
+| 5 | Current direction: up |
+| 6 | Current direction: down |
+| 7 | Food to the left |
+| 8 | Food to the right |
+| 9 | Food above |
+| 10 | Food below |
+
+### 3. Neural Network
+
+```text
+Input (11) → Hidden Layer (256, ReLU) → Output (3)
+```
+
+The output provides a **Q-value** for each of the 3 possible actions.
+The agent chooses the action with the highest Q-value.
+
+### 4. The Q-Learning Algorithm
+
+The agent learns using the **Bellman equation**:
+
+```text
+Q(state, action) = reward + γ × max(Q(next state, all actions))
+```
+
+With:
+- **γ = 0.9** (discount factor — importance of future rewards)
+- **Loss = MSE** between the predicted Q-value and the target Q-value
+- **Optimizer = Adam** (lr = 0.001)
+
+### 5. Exploration vs. Exploitation (ε-greedy)
+
+During the first 80 games, the agent explores randomly to discover
+new strategies. Afterwards, it exploits the knowledge it has acquired.
+
+```text
+ε = max(0, 80 - number_of_games)
+If random(0, 200) < ε  →  random action (exploration)
+Otherwise              →  neural network (exploitation)
+```
+
+### 6. Experience Replay
+
+Each transition `(state, action, reward, next_state, done)` is stored
+in a memory of **100,000 experiences**. At the end of each game, a batch
+of **1,000 transitions** is randomly selected for training.
+
+This allows the agent to:
+- Break temporal correlations between experiences
+- Reuse past experiences multiple times
+- Stabilize the training process
+
+---
+
+## Hyperparameters
+
+| Parameter | Value |
+|---|---|
+| `MAX_MEMORY` | 100,000 |
+| `BATCH_SIZE` | 1,000 |
+| `LR` (learning rate) | 0.001 |
+| `GAMMA` (discount) | 0.9 |
+| `HIDDEN_SIZE` | 256 |
+| `EPSILON_MAX` | 80 games |
+| `SPEED` | 40 FPS |
+
+---
+
+## Checkpoint and Training Resumption
+
+The model is automatically saved:
+- Whenever a **new high score** is achieved
+- Every **50 games**
+
+The `model/checkpoint.pth` file contains:
+- Neural network weights
+- Adam optimizer state
+- Number of games played
+- Current epsilon value
+- Current high score
+
+When the project is launched again, training **resumes exactly** where it left off.
+
+---
+
+## Author
+
+Project developed as part of the **Data & AI B3 — YDays** curriculum.
