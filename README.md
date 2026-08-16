@@ -201,7 +201,7 @@ Projet réalisé dans le cadre du cursus **Data IA B3 — YDays**.
 
 ---
 
-# [<img src="https://flagcdn.com/24x18/gb.png" alt="English"> English](README_EN.md - IA Snake — Reinforcement Learning (DQN)
+# [<img src="https://flagcdn.com/24x18/gb.png" alt="English"> English](README_EN.md) - IA Snake — Reinforcement Learning (DQN)
 
 An intelligent agent that learns to play the Snake game from scratch, without any hard-coded rules,
 simply by observing the consequences of its actions.
