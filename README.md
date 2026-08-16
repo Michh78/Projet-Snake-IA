@@ -198,3 +198,52 @@ Au prochain lancement, l'entraînement **reprend exactement** où il s'est arrê
 ## Auteur
 
 Projet réalisé dans le cadre du cursus **Data IA B3 — YDays**
+
+
+
+# IA Snake — Reinforcement Learning (DQN)
+
+An intelligent agent that learns to play the Snake game from scratch, without any hard-coded rules, simply by observing the consequences of its actions.
+
+---
+
+## Project Overview
+
+This project implements a **Deep Q-Learning (DQN)** agent trained on the Snake game.
+
+The agent does not know the rules of the game: it learns through trial and error by maximizing a cumulative reward score.
+
+**Technologies used:**
+- Python 3.11
+- PyTorch — neural network and training
+- Pygame — game environment
+- NumPy — vector computations
+- Matplotlib — training visualization
+
+---
+
+## Results
+
+| Metric | Value |
+|---|---|
+| Games played (checkpoint) | ~1059 |
+| Best score | Saved in `model/checkpoint.pth` |
+| Network architecture | 11 → 256 → 3 |
+| Experience replay memory | 100,000 transitions |
+| Batch size | 1,000 |
+
+---
+
+## Project Structure
+
+```text
+IA_snake/
+├── agent.py              # RL agent + training loop
+├── game.py               # Snake environment for the AI
+├── model.py              # Neural network + QTrainer
+├── helper.py             # Real-time training graph
+├── snake_game_human.py   # Keyboard-playable version
+├── arial.ttf             # Display font
+└── model/
+    ├── model.pth         # Trained model weights
+    └── checkpoint.pth    # Complete checkpoint (model + optimizer + state)
